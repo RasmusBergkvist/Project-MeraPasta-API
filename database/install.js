@@ -32,7 +32,7 @@ async function createTables() {
             item_name VARCHAR(60) UNIQUE NOT NULL,
             item_price INT NOT NULL,
             item_description TEXT,
-            category_id INT NOT NULL REFERENCES categories(category_id),
+            category_id INT NOT NULL REFERENCES categories(category_id) ON DELETE CASCADE,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
             `)
