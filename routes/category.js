@@ -53,7 +53,7 @@ router.get("/:id", async (req, res) => {
         res.status(500).json({ Error: "Internal server error. Could not get category." });
         
     }
-})
+});
 
 //Skapa kategorier
 router.post("/", async (req, res) => {
@@ -82,7 +82,7 @@ router.post("/", async (req, res) => {
 
     } catch (error) {     
         console.error(error);
-         res.status(500).json({ error: "Internal server error. Could not get categories"});
+         res.status(500).json({ error: "Internal server error. Could not create category"});
     }
 });
 
