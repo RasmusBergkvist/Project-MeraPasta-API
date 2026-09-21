@@ -10,6 +10,7 @@ const app = express();
 //Läser in routes
 const categoryRoutes = require("./routes/category");
 const menuItemRoutes = require("./routes/menuItem");
+const bookingRoutes = require("./routes/booking");
 
  //Tillåter anrop från andra domäner
 app.use(cors());
@@ -20,6 +21,7 @@ app.use(express.json());
 //Kopplar till routes
 app.use("/api/categories", categoryRoutes);
 app.use("/api/menuitems", menuItemRoutes);
+app.use("/api/bookings", bookingRoutes);
 
 app.get("/", (req, res) => {
     res.json({message: "API is running"});
