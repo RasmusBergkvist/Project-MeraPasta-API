@@ -40,10 +40,9 @@ async function createTables() {
         await client.query(`
             CREATE TABLE IF NOT EXISTS opening_hours(
             open_id SERIAL PRIMARY KEY NOT NULL,
-            days_of_week VARCHAR(25) NOT NULL,
-            open_time TIME NOT NULL,
-            close_time TIME NOT NULL,
-            is_closed BOOL 
+            day_of_week VARCHAR(25) NOT NULL UNIQUE,
+            open_time TIME,
+            close_time TIME
             )
             `)
 

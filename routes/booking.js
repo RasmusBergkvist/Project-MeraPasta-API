@@ -66,33 +66,33 @@ router.post("/", async (req, res) => {
 
     //Validerar input 
     if (!costumer_name || costumer_name.trim().length < 2) {
-        validationErrors.push({ message: "Name must be at least 2 characters long." });
+        validationErrors.push("Name must be at least 2 characters long.");
     }
 
     //Regex för att validera e-postadressen är korrekt
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!costumer_email || !emailRegex.test(costumer_email)) {
-        validationErrors.push({ message: "Invalid e-mail!" });
+        validationErrors.push("Invalid e-mail!");
     }
 
     //Validera telefonnummer som måste vara mellan 7 - 15 tecken
-    if (!costumer_phonenumber || costumer_phonenumber.trim().length < 7 || costumer_phonenumber.trim().length > 15) {
-        validationErrors.push({ message: "Invalid phonenumber! Must be between between 7 and 15 characters." });
+    if (!costumer_phonenumber || costumer_phonenumber.length < 7 || costumer_phonenumber.length > 15) {
+        validationErrors.push("Invalid phonenumber! Must be between between 7 and 15 characters.");
     }
     //Validera antal gäster mellan 1 - 10 samt att det är ett nummer. 
     if (!guests || typeof guests !== "number" || guests < 1 || guests > 10) {
-        validationErrors.push({ message: "Invalid number of guests. Must be between 1 - 10" });
+        validationErrors.push("Invalid number of guests. Must be between 1 - 10");
     }
 
     //Validerar datum
     if (!booking_date) {
-        validationErrors.push({ message: "Booking date is required" });
+        validationErrors.push("Booking date is required");
     }
 
     //Validerar bokningstiden
     if (!booking_time) {
-        validationErrors.push({ message: "Booking time is required." });
+        validationErrors.push("Booking time is required.");
     }
 
     //Skriver ut valideringsfel
@@ -101,13 +101,11 @@ router.post("/", async (req, res) => {
     }
 
 
-
-
     try {
         //Kontroll om bokingsförfrågan redan finns databasen
         const checkResult = await client.query(`SELECT * FROM bookings
               WHERE costumer_name ILIKE $1
-              AND costumer_email = $2
+              AND costumer_email ILIKE $2
               AND guests = $3
               AND booking_date = $4
               AND booking_time = $5 `
@@ -146,33 +144,33 @@ router.put("/:id", async (req, res) => {
 
     //Validerar input 
     if (!costumer_name || costumer_name.trim().length < 2) {
-        validationErrors.push({ message: "Name must be at least 2 characters long." });
+        validationErrors.push("Name must be at least 2 characters long.");
     }
 
     //Regex för att validera e-postadressen är korrekt
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!costumer_email || !emailRegex.test(costumer_email)) {
-        validationErrors.push({ message: "Invalid e-mail.!" });
+        validationErrors.push("Invalid e-mail.!");
     }
 
     //Validera telefonnummer som måste vara mellan 7 - 15 tecken
-    if (!costumer_phonenumber || costumer_phonenumber.trim().length < 7 || costumer_phonenumber.trim().length > 15) {
+    if (!costumer_phonenumber || costumer_phonenumber.length < 7 || costumer_phonenumber.length > 15) {
         validationErrors.push({ message: "Invalid phonenumber! Must be between between 7 and 15 characters." });
     }
     //Validera antal gäster mellan 1 - 10 samt att det är ett nummer. 
     if (!guests || typeof guests !== "number" || guests < 1 || guests > 10) {
-        validationErrors.push({ message: "Invalid number of guests. Must be between 1 - 10" });
+        validationErrors.push("Invalid number of guests. Must be between 1 - 10");
     }
 
     //Validerar datum
     if (!booking_date) {
-        validationErrors.push({ message: "Booking date is required" });
+        validationErrors.push("Booking date is required.");
     }
 
     //Validerar bokningstiden
     if (!booking_time) {
-        validationErrors.push({ message: "Booking time is required." });
+        validationErrors.push("Booking time is required.");
     }
 
     //Skriver ut valideringsfel
@@ -181,13 +179,11 @@ router.put("/:id", async (req, res) => {
     }
 
 
-
-
     try {
         //Kontroll om bokingsförfrågan redan finns databasen
         const checkResult = await client.query(`SELECT * FROM bookings
               WHERE costumer_name ILIKE $1
-              AND costumer_email = $2
+              AND costumer_email ILIKE $2
               AND guests = $3
               AND booking_date = $4
               AND booking_time = $5 
@@ -205,7 +201,7 @@ router.put("/:id", async (req, res) => {
 
 
         //Meddelande vid lyckad post
-        res.status(201).json({ message: "Booking request updated succesfully"});
+        res.status(201).json({ message: "Booking request updated successfully"});
 
     } catch (error) {
         console.error(error);
@@ -230,7 +226,7 @@ router.delete("/:id", async (req, res) => {
         }
 
         //Meddelande vid lyckad radering
-        res.json({ message: "Booking request deleted" });
+        res.json({ message: "Booking request deleted successfully." });
 
 
     } catch (error) {
