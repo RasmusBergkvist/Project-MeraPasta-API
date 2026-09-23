@@ -12,6 +12,7 @@ const categoryRoutes = require("./routes/category");
 const menuItemRoutes = require("./routes/menuItem");
 const bookingRoutes = require("./routes/booking");
 const openingHoursRoutes = require("./routes/openingHours");
+const userRoutes = require("./routes/user");
 
  //Tillåter anrop från andra domäner
 app.use(cors());
@@ -24,6 +25,7 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/menuitems", menuItemRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/openinghours", openingHoursRoutes);
+app.use("/api/users", userRoutes);
 
 app.get("/", (req, res) => {
     res.json({message: "API is running"});

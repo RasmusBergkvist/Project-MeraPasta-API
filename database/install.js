@@ -1,10 +1,16 @@
+require("dotenv").config();
+
 
 //Hämtar anslutning från db.js
 const client = require('./db');
 
+//Hämtar bcrypt
+const bcrypt = require("bcrypt");
+
+
 
 //Skapar tabeller
-async function createTables() {
+async function initDatabase() {
     try {
         //Tar bort tabeller
         await client.query(`
@@ -63,15 +69,37 @@ async function createTables() {
         await client.query(`
             CREATE TABLE IF NOT EXISTS users(
             user_id SERIAL PRIMARY KEY NOT NULL,
-            user_name VARCHAR(100) NOT NULL,
-            user_email VARCHAR(255)NOT NULL,
+            username VARCHAR(100) NOT NULL,
+            email VARCHAR(255)NOT NULL,
             hashed_password VARCHAR(255) NOT NULL,
             role VARCHAR(20) NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
             `)
 
-            console.log("Tables created successfully!")
+            //Hämtar admin-uppgifter
+            const username = process.env.ADMIN_USERNAME;
+            const email = process.env.ADMIN_EMAIL;
+            const password = process.env.ADMIN_PASSWORD;
+            const role = process.env.ADMIN_ROLE;
+
+            //Hashar lösenord innan det sparas
+            const hashedPassword = await bcrypt.hash(password, 10);
+
+            //Kontroll att inte kontot finns innan det skapas
+            const checkAccount = await client.query(`SELECT * FROM users WHERE username = $1`, [username]);
+
+            //Om kontot inte finns
+            if(checkAccount.rows.length === 0) {
+                await client.query(`INSERT INTO users(username, email, hashed_password, role)
+                VALUES($1, $2, $3, $4)`,[username, email, hashedPassword, role]);
+                console.log(`Account created: ${username}`);
+            } else {
+                console.log("Account already created.")
+            }
+            
+
+            console.log("Database created successfully!")
     } catch (error) {
         //Ev. felmeddelanden
         console.error("Could not create tables ", error);
@@ -83,4 +111,4 @@ async function createTables() {
 }
 
 //Anropar funktionen
-createTables();
+initDatabase();
