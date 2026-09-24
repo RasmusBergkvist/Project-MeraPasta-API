@@ -2,6 +2,9 @@
 const express = require("express");
 const client = require("../database/db");
 
+//Hämtar middleware
+const {authenticateToken} = require("../middleware/authenticateTokens");
+
 //Skapar router till endpoints
 const router = express.Router();
 
@@ -73,7 +76,7 @@ router.get("/category/:id", async (req, res) => {
 
 
 //Skapar menyartikel
-router.post("/", async (req, res) => {
+router.post("/", authenticateToken, async (req, res) => {
 
     const { item_name, item_price, item_description, category_id } = req.body;
 
@@ -122,7 +125,7 @@ router.post("/", async (req, res) => {
 
 
 //Updatera menyartikel
-router.put("/:id", async (req, res) => {
+router.put("/:id",authenticateToken, async (req, res) => {
     //Läser av id från webbläsarfönstret 
     const id = req.params.id;
 
@@ -180,7 +183,7 @@ router.put("/:id", async (req, res) => {
 
 
 //Radera menyartikel
-router.delete("/:id", async (req, res) => {
+router.delete("/:id",authenticateToken, async (req, res) => {
     const id = req.params.id;
 
     try {

@@ -2,8 +2,12 @@
 const express = require("express");
 const client = require("../database/db");
 
+//Hämtar middleware
+const {authenticateToken} = require("../middleware/authenticateTokens");
+
 //Skapar router till endpoints
 const router = express.Router();
+
 
 /**
  * BOOKINGS
@@ -11,7 +15,7 @@ const router = express.Router();
 
 
 //Hämta alla bokningar
-router.get("/", async (req, res) => {
+router.get("/", authenticateToken, async (req, res) => {
     try {
         //Hämtar bokingar från databasen
         const result = await client.query(`SELECT * FROM bookings ORDER BY booking_id`);
@@ -31,7 +35,7 @@ router.get("/", async (req, res) => {
 });
 
 //Hämta booking kategori
-router.get("/:id", async (req, res) => {
+router.get("/:id", authenticateToken, async (req, res) => {
     //Hämtar id från webbläsarefönstret
     const id = req.params.id;
 
@@ -132,7 +136,7 @@ router.post("/", async (req, res) => {
 
 
 //Ändra bokningar
-router.put("/:id", async (req, res) => {
+router.put("/:id",authenticateToken, async (req, res) => {
 
     //Hämtar id från webbläsarfönstret.
     const id = req.params.id;
@@ -210,7 +214,7 @@ router.put("/:id", async (req, res) => {
 });
 
 //Radera bokning
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authenticateToken, async (req, res) => {
 
     //Läser av id från webbläsarfönstret 
     const id = req.params.id;

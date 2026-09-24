@@ -2,6 +2,10 @@
 const express = require("express");
 const client = require("../database/db");
 
+//Hämtar middlewares
+const {authenticateToken, authenticateAdmin} = require("../middleware/authenticateTokens");
+
+
 //Skapar router till endpoints
 const router = express.Router();
 
@@ -56,7 +60,7 @@ router.get("/:id", async (req, res) => {
 });
 
 //Skapa kategorier
-router.post("/", async (req, res) => {
+router.post("/", authenticateToken, authenticateAdmin, async (req, res) => {
 
     const { category_name } = req.body;
 
@@ -87,7 +91,7 @@ router.post("/", async (req, res) => {
 });
 
 //Updatera kategori
-router.put("/:id", async (req, res) => {
+router.put("/:id",authenticateToken,authenticateAdmin, async (req, res) => {
     //Läser av id från webbläsarfönstret 
     const id = req.params.id;
 
@@ -127,7 +131,7 @@ router.put("/:id", async (req, res) => {
 
 
 //Radera kategori
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authenticateToken,authenticateAdmin, async (req, res) => {
 
     //Läser av id från webbläsarfönstret 
     const id = req.params.id;

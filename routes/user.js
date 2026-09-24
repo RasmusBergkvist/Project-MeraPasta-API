@@ -1,7 +1,13 @@
-//Hämtar express, databasanslutning och bcrypt
+require('dotenv').config();
+
+//Hämtar express, databasanslutning, bcrypt och jwt
 const express = require("express");
 const client = require("../database/db");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
+//Hämtar middlewares
+const {authenticateToken, authenticateAdmin} = require("../middleware/authenticateTokens");
 
 //Skapar router till endpoints
 const router = express.Router();
@@ -11,7 +17,7 @@ const router = express.Router();
  */
 
 //Hämta alla registrerade  användare
-router.get("/", async (req, res) => {
+router.get("/", authenticateToken, authenticateAdmin, async (req, res) => {
     try {
         result = await client.query(`SELECT user_id, username, email, role FROM users ORDER BY user_id`);
 
@@ -29,7 +35,7 @@ router.get("/", async (req, res) => {
 });
 
 //Lägg till användare
-router.post("/register", async (req, res) => {
+router.post("/register", authenticateToken, authenticateAdmin, async (req, res) => {
 
     const { username, email, password, role } = req.body;
 
@@ -88,7 +94,7 @@ router.post("/register", async (req, res) => {
 });
 
 //Radera användare
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authenticateToken, authenticateAdmin, async (req, res) => {
 
     //Läser av id från webbläsarfönstret 
     const id = req.params.id;
@@ -125,6 +131,57 @@ router.delete("/:id", async (req, res) => {
         console.error(error);
         res.status(500).json({ message: "Internal server error. Could not delete user." })
 
+    }
+});
+
+
+/**
+ * USER LOGIN
+ */
+
+//Logga in användare
+router.post("/login", async (req, res) => {
+    const {email, password} = req.body;
+
+         if(!email || !password) {
+            return res.status(400).json({message: "Incorret email or password"});
+        }
+
+    try {
+        //Hämtar användarens e-post
+        let userResult = await client.query(`SELECT * FROM users WHERE email = $1`,[email]);
+
+        //Om inte användare finns
+        if(userResult.rows.length === 0) {
+         return res.status(401).json({message: "Incorrect email or password"});
+        }
+
+        //Sparar användaren i user
+        const user = userResult.rows[0];
+
+        //Kontrollera lösenord
+        const passwordMatch = await bcrypt.compare(password, user.hashed_password);
+
+        //Om lösenord är felaktigt
+        if(!passwordMatch) {
+           return res.status(401).json({message: "Incorret email or password"});
+        }
+
+        //Skapar JWT-token
+        const payload = {id: user.user_id, email: user.email, role: user.role};
+        const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {expiresIn: "1h"});
+
+        const response = {
+            username: user.username,
+            token: token
+        }
+
+        return res.status(200).json(response);
+
+
+    }catch(error) {
+        console.error(error);
+        res.status(500).json({message: "Internal server error. Could not log in user"})
     }
 });
 

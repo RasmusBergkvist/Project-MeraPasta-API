@@ -2,6 +2,9 @@
 const express = require("express");
 const client = require("../database/db");
 
+//Hämtar middleware
+const {authenticateToken} = require("../middleware/authenticateTokens");
+
 //Skapar router till endpoints
 const router = express.Router();
 
@@ -58,7 +61,7 @@ router.get("/:id", async (req, res) => {
 
 
 //Lägg till bokningar
-router.post("/", async (req, res) => {
+router.post("/",authenticateToken, async (req, res) => {
 
     let { day_of_week, open_time, close_time } = req.body;
 
@@ -112,7 +115,7 @@ router.post("/", async (req, res) => {
 });
 
 //Lägg till bokningar
-router.put("/:id", async (req, res) => {
+router.put("/:id",authenticateToken, async (req, res) => {
     //Hämtar id från webbläsarfönstret
     const id = req.params.id;
 
@@ -167,7 +170,7 @@ router.put("/:id", async (req, res) => {
 });
 
 //Radera öppettider
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authenticateToken, async (req, res) => {
 
     //Läser av id från webbläsarfönstret 
     const id = req.params.id;
