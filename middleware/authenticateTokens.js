@@ -15,7 +15,7 @@ function authenticateToken(req, res, next) {
     jwt.verify(token, process.env.JWT_SECRET_KEY, (error, user) => {
         if(error) return res.status(403).json({message: "Invalid token!"});
 
-        //Skapar avkodade användaren och 
+        //Skapar avkodade användaren i req.user och anropar next för att skicka användare vidare
         req.user = user;
         next();
 

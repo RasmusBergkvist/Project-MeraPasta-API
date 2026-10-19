@@ -21,7 +21,7 @@ router.get("/:id", async (req, res) => {
     try {
         //Hämtar kategorin
         const result = await client.query(`
-            SELECT m.item_name, m.item_price, m.item_description, m.category_id, c.category_name, m.created_at
+            SELECT m.item_id, m.item_name, m.item_price, m.item_description, m.category_id, c.category_name, m.created_at
             FROM menu_items m 
             JOIN categories c ON m.category_id = c.category_id 
             WHERE m.item_id =$1`, [id]);
@@ -53,15 +53,15 @@ router.get("/category/:id", async (req, res) => {
     try {
         //Hämtar kategorin
         const result = await client.query(`
-            SELECT m.item_name, m.item_price, m.item_description, m.category_id, c.category_name, m.created_at
+            SELECT m.item_id, m.item_name, m.item_price, m.item_description, m.category_id, c.category_name, m.created_at
             FROM menu_items m 
             JOIN categories c ON m.category_id = c.category_id 
             WHERE m.category_id =$1`, [id]);
 
 
-        //Om inget result finns.
+        //Om inget result finns retuneras en tom array.
         if (result.rows.length === 0) {
-            return res.status(404).json({ message: "Menu not found." });
+            return res.status(200).json([]);
         }
 
         //Returnerar hämtad data

@@ -19,7 +19,7 @@ const router = express.Router();
 //Hämta alla registrerade  användare
 router.get("/", authenticateToken, authenticateAdmin, async (req, res) => {
     try {
-        result = await client.query(`SELECT user_id, username, email, role FROM users ORDER BY user_id`);
+        result = await client.query(`SELECT user_id, username, email, role FROM users ORDER BY role`);
 
         //Om inget result finns.
         if (result.rows.length === 0) {
@@ -69,7 +69,7 @@ router.post("/register", authenticateToken, authenticateAdmin, async (req, res) 
 
     try {
         //Kontroll om användaren redan finns databasen
-        const checkResult = await client.query(`SELECT * FROM users WHERE username ILIKE $1 AND email ILIKE $2 `, [username, email]);
+        const checkResult = await client.query(`SELECT * FROM users WHERE username ILIKE $1 OR email ILIKE $2 `, [username, email]);
 
         if (checkResult.rows.length > 0) {
             return res.status(409).json({ message: "Username or email already registered." })
@@ -144,7 +144,7 @@ router.post("/login", async (req, res) => {
     const {email, password} = req.body;
 
          if(!email || !password) {
-            return res.status(400).json({message: "Incorret email or password"});
+            return res.status(400).json({message: "Incorrect email or password"});
         }
 
     try {
@@ -164,7 +164,7 @@ router.post("/login", async (req, res) => {
 
         //Om lösenord är felaktigt
         if(!passwordMatch) {
-           return res.status(401).json({message: "Incorret email or password"});
+           return res.status(401).json({message: "Incorrect email or password"});
         }
 
         //Skapar JWT-token
@@ -173,6 +173,7 @@ router.post("/login", async (req, res) => {
 
         const response = {
             username: user.username,
+            role: user.role,
             token: token
         }
 

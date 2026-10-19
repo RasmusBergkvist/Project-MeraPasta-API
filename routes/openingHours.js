@@ -18,13 +18,9 @@ router.get("/", async (req, res) => {
         //Hämtar öppettider från databasen
         const result = await client.query(`SELECT * FROM opening_hours ORDER BY open_id`);
 
-        //Om inget result finns.
-        if (result.rows.length === 0) {
-            return res.status(200).json({ message: "Opening hours is empty." });
-        }
 
         //Returnerar hämtad data
-        res.json(result.rows);
+        res.status(200).json(result.rows);
 
     } catch (error) {
         console.error(error);

@@ -10,7 +10,7 @@ const app = express();
 //Läser in routes
 const categoryRoutes = require("./routes/category");
 const menuItemRoutes = require("./routes/menuItem");
-const bookingRoutes = require("./routes/booking");
+const reservationRoutes = require("./routes/reservation");
 const openingHoursRoutes = require("./routes/openingHours");
 const userRoutes = require("./routes/user");
 
@@ -23,7 +23,7 @@ app.use(express.json());
 //Kopplar till routes
 app.use("/api/categories", categoryRoutes);
 app.use("/api/menuitems", menuItemRoutes);
-app.use("/api/bookings", bookingRoutes);
+app.use("/api/reservations", reservationRoutes);
 app.use("/api/openinghours", openingHoursRoutes);
 app.use("/api/users", userRoutes);
 

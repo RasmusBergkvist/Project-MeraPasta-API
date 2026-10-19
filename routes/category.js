@@ -18,11 +18,11 @@ const router = express.Router();
 router.get("/", async (req, res) => {
     try {
         //Hämtar data från databasen
-        const result = await client.query(`SELECT * FROM categories ORDER BY category_name`);
+        const result = await client.query(`SELECT * FROM categories ORDER BY category_id`);
 
-        //Om inget result finns.
+        //Om inget result finns retuneras en tom arrray.
         if (result.rows.length === 0) {
-            return res.status(200).json({ message: "Categories is empty" });
+            return res.status(200).json([]);
         }
 
         //Returnerar hämtad data
