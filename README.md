@@ -5,7 +5,7 @@ Detta är ett REST-API som är byggt med Express och PostgreSQL till ett projekt
  Via API:et kan användare registreras, logga in och valideras med JWT-tokens. Lösenord hashas innan lagring till databasen. Det går även att hämta, skapa, uppdatera och radera kategorier, menyartiklar, bokningar och öppettider. Vilka routes som är skyddade och kräver en giltig token från användare står beskrivit längre ner. Användarna har även olika behörigheter för att utföra åtgärderna. Databasfrågorna är försedda med parametiserade frågor för att skydda mot SQL-injection.
 
 ## URL till API
-
+https://project-merapasta-api.onrender.com/
 
 ## Teknik
 * Databas: PostgreSQL
