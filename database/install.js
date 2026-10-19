@@ -21,7 +21,7 @@ async function initDatabase() {
             category_name VARCHAR(50) UNIQUE NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
-            `)
+            `);
 
 
 
@@ -33,8 +33,8 @@ async function initDatabase() {
             item_description TEXT,
             category_id INT NOT NULL REFERENCES categories(category_id) ON DELETE CASCADE,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-            `)
+            );
+            `);
 
         await client.query(`
             CREATE TABLE IF NOT EXISTS opening_hours(
@@ -42,8 +42,8 @@ async function initDatabase() {
             day_of_week VARCHAR(25) NOT NULL UNIQUE,
             open_time TIME,
             close_time TIME
-            )
-            `)
+            );
+            `);
 
         await client.query(`
             CREATE TABLE IF NOT EXISTS reservations(
@@ -56,8 +56,8 @@ async function initDatabase() {
             reservation_time TIME NOT NULL,
             message TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-            `)
+            );
+            `);
 
         await client.query(`
             CREATE TABLE IF NOT EXISTS users(
@@ -67,8 +67,8 @@ async function initDatabase() {
             hashed_password VARCHAR(255) NOT NULL,
             role VARCHAR(20) NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-            `)
+            );
+            `);
 
             //Hämtar admin-uppgifter
             const username = process.env.ADMIN_USERNAME;
