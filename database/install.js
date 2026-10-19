@@ -96,10 +96,7 @@ async function initDatabase() {
     } catch (error) {
         //Ev. felmeddelanden
         console.error("Could not create tables ", error);
-    } finally {
-        //Stänger databasanslutningen
-        client.end();
-    }
+    } 
 
 }
 
