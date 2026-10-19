@@ -2,7 +2,7 @@
 Detta är ett REST-API som är byggt med Express och PostgreSQL till ett projektarbete i kursen DT20G Backend-baserad webbutveckling. I projektet ska en webbplats skapas åt en fiktiv restaurang där personalen ska kunna logga in, lägga till, uppdatera och ta bort innehåll på deras webbplats. API:et kommer att integreras med restaurangens webbplats i projektets andra del.
 
 ## Om API:et
- Via API:et kan användare registreras, logga in och valideras med JWT-tokens. Lösenord hashas innan lagring till databasen. Det går även att hämta, skapa, uppdatera och radera kategorier, menyartiklar, bokningar och öppettider. Vilka routes som är skyddade och kräver en giltig token från användare stpr beskrivit längre ner. Användarna har även olika behörigheter för att utföra åtgärderna. Databasfrågorna är försedda med parametiserade frågor för att skydda mot SQL-injection.
+ Via API:et kan användare registreras, logga in och valideras med JWT-tokens. Lösenord hashas innan lagring till databasen. Det går även att hämta, skapa, uppdatera och radera kategorier, menyartiklar, bokningar och öppettider. Vilka routes som är skyddade och kräver en giltig token från användare står beskrivit längre ner. Användarna har även olika behörigheter för att utföra åtgärderna. Databasfrågorna är försedda med parametiserade frågor för att skydda mot SQL-injection.
 
 ## URL till API
 
